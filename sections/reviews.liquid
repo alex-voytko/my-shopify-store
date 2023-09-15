@@ -1,0 +1,259 @@
+{% assign accent_color = settings.accent_color %}
+{% if section.settings.use_custom_accent == true %}
+  {% assign accent_color = settings.settings.accent_color %}
+{% endif %}
+
+<section class="section section-{{ section.id }}">
+
+  <h2 class="section-title title-{{ section.id }}">{{ section.settings.title }}</h2>
+
+  <div class="review-slider">
+    <div class="swiper-scrollbar"></div>
+    <ul class="review-list swiper-wrapper">
+      {% for block in section.blocks %}
+          {% render 'review-card', block: block, accent_color: accent_color, review_footer_icon_color: section.settings.review_footer_content_color %}
+      {% endfor %}
+    </ul>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+</section>
+
+<script type="module">
+  const swiper = new Swiper('.review-slider', {
+    loop: false,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+      dynamicBullets: false,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    autoHeight: false,
+    slidesPerView: 1,
+    centeredSlides: true,
+    spaceBetween: 30,
+    breakpoints: {
+      768: {
+        navigation: {
+          enabled: false,
+        },
+        freeMode: true,
+        pagination: {
+          enabled: false,
+        },
+        slidesPerView: 'auto',
+        centeredSlides: false,
+        scrollbar: {
+          el: '.swiper-scrollbar',
+          draggable: true,
+        }
+      }
+    }
+  })
+</script>
+
+<style>
+  .section-{{ section.id }} {
+    background-color: {{ section.settings.bg }};
+  }
+  .section-title.title-{{ section.id }} {
+    color: {{ section.settings.title_color }};
+    margin-bottom: 150px;
+  }
+  .section-{{ section.id }} > .review-list {
+    margin-top: 130px;
+  }
+  .review-card {
+    width: 380px;
+    height: 600px;
+    background-color: {{ section.settings.review_bg_color }};
+    border-radius: 15px;
+  }
+  .review-card > .review-body {
+    position: relative;
+    height: 500px;
+    padding: 95px 20px 0;
+  }
+  .review-card > .review-footer-container {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background-color: {{ accent_color }};
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+  .review-card .rate-container {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 25px;
+  }
+  .review-card .photo-container {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    top: 0;
+    left: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+  }
+  @media screen and (max-width: 767px) {
+    .review-card .photo-container {
+      width: 100px;
+      height: 100px;
+    }
+    .section-title.title-{{ section.id }} {
+      width: 100%;
+      margin-bottom: 80px;
+    }
+  }
+  .review-content-container > .review-title {
+    text-align: center;
+    font-size: 24px;
+    line-height: 30px;
+    margin-bottom: 15px;
+    color: {{ section.settings.review_text_color }};
+  }
+  .review-content-container > .review-description {
+    height: 150px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 25px;
+    margin-bottom: 50px;
+    text-overflow: ellipsis;
+    color: {{ section.settings.review_text_color }};
+  }
+  .review-content-container > .review-description::before {
+    content: '\201C';
+  }
+  .review-content-container > .review-description::after {
+    content: '\201D';
+  }
+  .review-content-container > .review-author {
+    position: absolute;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 22px;
+    line-height: 27.5px;
+    color: {{ section.settings.review_text_color }};
+  }
+  .review-card > .review-footer-container > .product-content-container {
+    display: flex;
+    align-items: center;
+  }
+  .review-footer-container > .product-content-container > .product-title {
+    font-size: 16px;
+    color: {{ section.settings.review_footer_content_color }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Review-Slideshow",
+  "class": "review-slideshow",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_custom_accent",
+      "label": "Use custom accent color",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Why People Love Us"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#363636"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background section color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color"
+    },
+    {
+      "type": "color",
+      "id": "review_bg_color",
+      "label": "Background review color",
+      "default": "#DFFFFD"
+    },
+    {
+      "type": "color",
+      "id": "review_text_color",
+      "label": "Review text color",
+      "default": "#363636"
+    },
+    {
+      "type": "color",
+      "id": "review_footer_content_color",
+      "label": "Review footer content color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Slide image",
+          "id": "slide_image"
+        },
+        {
+          "type": "range",
+          "id": "rate_stars",
+          "min": 1,
+          "max": 5,
+          "label": "Rate by stars",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "review_title",
+          "label": "Review title",
+          "default": "Review title"
+        },
+        {
+          "type": "textarea",
+          "id": "review_description",
+          "label": "Review description",
+          "default": "Review description"
+        },
+        {
+          "type": "text",
+          "id": "review_author",
+          "label": "Author",
+          "default": "Author"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

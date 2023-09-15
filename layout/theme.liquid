@@ -1,0 +1,14 @@
+<html>
+<head>
+   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+   <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+   {{ 'style.css' | asset_url | stylesheet_tag }}
+   {{ 'swiper.css' | asset_url | stylesheet_tag }}
+   {{ content_for_header }}
+</head>
+<body>
+   <main>
+       {{ content_for_layout }}
+   </main>
+</body>
+</html>

@@ -1,0 +1,66 @@
+.swiper-horizontal {
+    position: relative;
+}
+.swiper-pagination > .swiper-pagination-bullet {
+    background-color: transparent;
+    border: 1px solid black
+}
+.swiper-pagination > .swiper-pagination-bullet-active {
+    background: {{ settings.accent_color }};
+    border: 1px solid {{ settings.accent_color }};
+}
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal,
+.swiper-pagination-custom,
+.swiper-pagination-fraction  {
+    bottom: -30px;
+}
+.swiper-scrollbar {
+    display: none;
+}
+.swiper-wrapper {
+    height: fit-content;
+}
+.swiper-horizontal > .swiper-button-prev,
+.swiper-horizontal > .swiper-button-next {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: white;
+    filter: drop-shadow(0px 1px 1px #a6a6a6);
+}
+.swiper-horizontal > .swiper-button-prev {
+    left: -10px;
+    padding-right: 3px;
+}
+.swiper-horizontal > .swiper-button-next {
+    right: -10px;
+    padding-left: 3px;
+}
+.swiper-horizontal > .swiper-button-prev::after,
+.swiper-horizontal > .swiper-button-next::after {
+    font-size: 15px;
+    font-weight: 600;
+    top: 50%;
+    left: 50%;
+    color: {{ settings.accent_color }};
+}
+@media screen and (min-width: 768px) {
+    .swiper-horizontal > .swiper-scrollbar,
+    .swiper-scrollbar.swiper-scrollbar-horizontal {
+        display: block;
+        bottom: -25px;
+    }
+    .swiper-scrollbar .swiper-scrollbar-drag {
+        background-color: {{ settings.accent_color }};
+    }
+    .swiper-scrollbar-lock + .swiper-wrapper {
+        display: flex;
+        justify-content: center;
+    }
+    .swiper-horizontal > .swiper-button-next,
+    .swiper-horizontal > .swiper-button-prev,
+    .swiper-horizontal > .swiper-pagination {
+        display: none;
+    }
+}

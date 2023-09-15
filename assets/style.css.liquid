@@ -1,0 +1,98 @@
+@font-face {
+    font-family: 'F37 Ginger';
+    src: url('{{ 'f37-ginger.ttf' | asset_url }}') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    font-family: 'F37 Ginger', sans-serif;
+    color: {{ settings.text_color }};
+    background-color: {{ settings.bg }};
+    overflow-x: hidden;
+}
+
+body::after {
+    content: "";
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 50vh;
+    right: -50%;
+    pointer-events: none;
+    overflow: hidden;
+    background: radial-gradient(50% 50% at 50% 50%, {{ settings.accent_color | append: "4D" }}, rgba(255, 255, 255, 0.00) 100%);
+}
+
+p, ul, h2, body {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
+.layout {
+    padding-top: 60px;
+    padding-bottom: 100px;
+    overflow: hidden;
+}
+
+.section {
+    padding: 60px 20px;
+}
+
+.section-title {
+    width: 612px;
+    display: block;
+    text-align: center;
+    font-size: 40px;
+    line-height: 52px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 767px) {
+    .section-title {
+        font-size: 34px;
+    }
+}
+
+.section-description {
+    width: 736px;
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    line-height: 25.28px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 130px;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+.btn-container > button {
+    font-family: 'F37 Ginger', sans-serif;
+    background-color: {{ settings.accent_color }};
+    border-radius: 15px;
+    padding: 16px 50px;
+    border: none;
+    color: {{ settings.btn_text_color }};
+    transition: all 0.3s ease-in;
+    cursor: pointer;
+    user-select: none;
+}
+
+.btn-container > button:hover {
+    transform: scale(1.05);
+}

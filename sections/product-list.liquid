@@ -1,0 +1,301 @@
+{% assign btn_bg_color = settings.accent_color %}
+{% if section.settings.use_custom_accent == true %}
+  {% assign btn_bg_color = section.settings.btn_bg %}
+{% endif %}
+
+<section class="section section-{{ section.id }}">
+  <h2 class="section-title title-{{ section.id }}">{{ section.settings.title }}</h2>
+
+  <p class="section-description description-{{ section.id }}">{{ section.settings.description }}</p>
+
+  <div class="product-list-slider">
+    <div class="swiper-scrollbar"></div>
+    <ul class="product-list swiper-wrapper">
+      {% if section.settings.product_list == blank %}
+        <!-- When array of products is empty frontpage collection will be rendered: -->
+        {% for product in collections['frontpage'].products %}
+          {% render 'product-card', product: product, icon_fill: section.settings.tag_icon_color %}
+        {% endfor %}
+      {% else %}
+        <!-- When user selected at least 1 product, array of selected products will be rendered: -->
+        {% for product in section.settings.product_list %}
+          {% render 'product-card', product: product, icon_fill: section.settings.tag_icon_color %}
+        {% endfor %}
+      {% endif %}
+    </ul>
+    <div class="swiper-pagination"></div>
+  </div>
+  <div class="btn-container btn-container-{{ section.id }}">
+    <button>{{ section.settings.btn_text }}</button>
+  </div>
+</section>
+
+<script type="module">
+  const swiper = new Swiper('.product-list-slider', {
+    loop: false,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+      dynamicBullets: false,
+    },
+    autoHeight: false,
+    slidesPerView: 1,
+    centeredSlides: true,
+    breakpoints: {
+      768: {
+        freeMode: true,
+        pagination: {
+          enabled: false,
+        },
+        slidesPerView: 'auto',
+        centeredSlides: false,
+        scrollbar: {
+          el: '.swiper-scrollbar',
+          draggable: true,
+        }
+      }
+    }
+  })
+</script>
+
+<style>
+  .product-list-slider {
+    min-width: 0;
+  }
+  .product-list {
+    min-width: 0;
+  }
+  .section-{{ section.id }} {
+    background-color: {{ section.settings.bg }};
+  }
+  .section-title.title-{{ section.id }} {
+    color: {{ section.settings.title_color }};
+    margin-bottom: 30px;
+  }
+  @media screen and (max-width: 767px) {
+    .section-title.title-{{ section.id }} {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+  .section-description.description-{{ section.id }} {
+    color: {{ section.settings.description_color }}
+  }
+  @media screen and (max-width: 767px) {
+    .section-description.description-{{ section.id }} {
+      width: 100%;
+      margin-bottom: 50px;
+    }
+  }
+  .btn-container.btn-container-{{ section.id }} {
+    display: {% if section.settings.show_btn == true  %}flex{% else %}none{% endif %};
+  }
+  .btn-container.btn-container-{{ section.id }} > button {
+    background-color: {{ btn_bg_color }};
+    color: {{ section.settings.btn_text_color }}
+  }
+  .btn-container.btn-container-{{ section.id }} > button:hover {
+    background-color: {% if section.settings.use_custom_accent == true %}{{ section.settings.btn_bg_on_hover }}{% else %}{{ btn_bg_color }}{% endif %};
+    color: {% if section.settings.use_custom_accent == true %}{{ section.settings.btn_text_color_on_hover }}{% else %}white{% endif %};
+  }
+  .image-flex-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  .product-card.swiper-slide {
+    position: relative;
+    width: 270px !important;
+    max-height: 380px;
+    transition: all 0.3s ease-in;
+    padding: 36px 18px 18px 18px;
+    border-radius: 15px;
+    cursor: pointer;
+    user-select: none;
+  }
+  @media screen and (max-width: 767px) {
+    .product-card.swiper-slide {
+      width: 100% !important;
+    }
+  }
+  .product-card:hover {
+    background-color: {{ section.settings.product_hover_bg }};
+    transform: scale(1.02);
+  }
+  .product-card:hover .price-label {
+    opacity: 1;
+  }
+  .product-tag-list {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+  .product-title {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: {{ section.settings.product_title_color }};
+  }
+  .product-price {
+    font-size: 16px;
+    text-align: center;
+    color: {{ section.settings.product_price_color }};
+  }
+  .product-tag {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 8px 10px;
+    border: 1px solid {{ section.settings.tag_border_color }};
+    border-radius: 4px;
+  }
+  .tag-name {
+    display: block;
+    font-size: 16px;
+    margin-left: 10px;
+    color: {{ section.settings.tag_text_color }}
+  }
+  .price-label {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    opacity: 0;
+    transition: all 0.3s ease-in;
+    color: {{ section.settings.price_label }};
+  }
+  .price-label .amount {
+    font-size: 16px;
+  }
+  .price-label .term {
+    font-size: 12px;
+    text-align: right;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "ProductList",
+  "class": "product-list",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_custom_accent",
+      "label": "Use custom accent color",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background section color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title content",
+      "default": "Have you had your daily dose of vit today?"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#363636"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Whether you need a daily pick-me up or a little sleep support, our products are developed with the end goal in mind. Optimally-dosed, highly bio-available formulas means you can see and feel results that set you on a path to better health."
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#363636"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Products",
+      "limit": 4
+    },
+    {
+      "type": "color",
+      "id": "product_hover_bg",
+      "label": "Product hover background color",
+      "default": "#FFF9C0"
+    },
+    {
+      "type": "color",
+      "id": "price_label",
+      "label": "Price label color",
+      "default": "#363636"
+    },
+    {
+      "type": "color",
+      "id": "tag_text_color",
+      "label": "Tag text color",
+      "default": "#363636"
+    },
+    {
+      "type": "color",
+      "id": "tag_icon_color",
+      "label": "Tag icon color",
+      "default": "#363636"
+    },
+    {
+      "type": "color",
+      "id": "tag_border_color",
+      "label": "Tag border color",
+      "default": "#D7D2CC"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product title color",
+      "default": "#363636"
+    },
+    {
+      "type": "color",
+      "id": "product_price_color",
+      "label": "Product price color",
+      "default": "#363636"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_btn",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text content",
+      "default": "See All Products"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button background color",
+      "default": "#00AFA9"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color_on_hover",
+      "label": "Button text hover color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_on_hover",
+      "label": "Button background hover color"
+    }
+  ]
+}
+{% endschema %}

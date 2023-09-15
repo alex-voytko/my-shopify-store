@@ -1,0 +1,26 @@
+<li class="review-card swiper-slide">
+    <div class="review-body">
+        <div class="photo-container">
+            <img src="{{ block.settings.slide_image | img_url: 'master' }}" width="100%" height="100%" />
+        </div>
+        <ul class="rate-container">
+            {% for i in (1..block.settings.rate_stars) %}
+                <li class="star-item">
+                    {% render 'icon', name: 'star', icon_fill: accent_color %}
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="review-content-container">
+            <p class="review-title">{{ block.settings.review_title }}</p>
+            <p class="review-description">{{ block.settings.review_description }}</p>
+            <p class="review-author">{{ block.settings.review_author }}</p>
+        </div>
+    </div>
+    <div class="review-footer-container">
+        <div class="product-content-container">
+            <img src="{{ block.settings.product.featured_image | img_url: 'master' }}" width="92px" height="70px">
+            <p class="product-title">{{ block.settings.product.title }}</p>
+        </div>
+        {% render 'icon', name: 'arrow-right', icon_fill: review_footer_icon_color %}
+    </div>
+</li>
