@@ -1,7 +1,11 @@
 {% assign btn_bg_color = settings.accent_color %}
-{% if section.settings.use_custom_accent == true %}
+{% assign collection_products = collections['frontpage'].products %}
+{% if section.settings.use_custom_accent %}
   {% assign btn_bg_color = section.settings.btn_bg %}
 {% endif %}
+{% unless section.settings.product_list == blank %}
+  {% assign collection_products = section.settings.product_list %}
+{%endunless%}
 
 <section class="section section-{{ section.id }}">
   <h2 class="section-title title-{{ section.id }}">{{ section.settings.title }}</h2>
@@ -11,17 +15,9 @@
   <div class="product-list-slider">
     <div class="swiper-scrollbar"></div>
     <ul class="product-list swiper-wrapper">
-      {% if section.settings.product_list == blank %}
-        <!-- When array of products is empty frontpage collection will be rendered: -->
-        {% for product in collections['frontpage'].products %}
-          {% render 'product-card', product: product, icon_fill: section.settings.tag_icon_color %}
-        {% endfor %}
-      {% else %}
-        <!-- When user selected at least 1 product, array of selected products will be rendered: -->
-        {% for product in section.settings.product_list %}
-          {% render 'product-card', product: product, icon_fill: section.settings.tag_icon_color %}
-        {% endfor %}
-      {% endif %}
+      {% for product in collection_products %}
+        {% render 'product-card', product: product, icon_fill: section.settings.tag_icon_color %}
+      {% endfor %}
     </ul>
     <div class="swiper-pagination"></div>
   </div>
